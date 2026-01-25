@@ -4,9 +4,10 @@
 
 
 
+
 # Проверка и создание macvlan интерфейса, если не существует
 if ! ip link show macvlan-CoreDNS &>/dev/null; then
-  sudo ip link add macvlan-CoreDNS link eth0 type macvlan mode bridge
+  sudo ip link add macvlan-CoreDNS link eth0 type macvlan mode bridge 2>/dev/null || true
   echo "Создан интерфейс macvlan-CoreDNS."
 else
   echo "Интерфейс macvlan-CoreDNS уже существует."
@@ -29,7 +30,7 @@ if ip addr | grep -wq '172.20.100.254'; then
     echo "ВНИМАНИЕ: IP 172.20.100.254 уже назначен на другом интерфейсе!"
   fi
 else
-  sudo ip addr add 172.20.100.254/24 dev macvlan-CoreDNS
+  sudo ip addr add 172.20.100.254/24 dev macvlan-CoreDNS 2>/dev/null || true
   echo "Назначен IP 172.20.100.254/24 на macvlan-CoreDNS."
 fi
 
