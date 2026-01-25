@@ -21,10 +21,7 @@ lan.:53 {
     }
     ready
     prometheus :9153
-    forward . https://dns.google/dns-query {
-        tls_servername dns.google
-        bootstrap 8.8.8.8 8.8.4.4 2001:4860:4860::8888 2001:4860:4860::8844
-    }
+    forward . 8.8.8.8 8.8.4.4
     cache 30
 }
 
