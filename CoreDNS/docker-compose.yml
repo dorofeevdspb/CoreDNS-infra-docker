@@ -15,10 +15,5 @@ services:
 
 networks:
   macvlan_net:
-    driver: macvlan
-    driver_opts:
-      parent: eth0 # замените на ваш интерфейс
-    ipam:
-      config:
-        - subnet: 172.20.100.0/24
-          gateway: 172.20.100.254
+    external: true
+    name: macvlan_net
