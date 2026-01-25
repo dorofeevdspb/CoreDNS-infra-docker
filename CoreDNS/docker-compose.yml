@@ -15,7 +15,7 @@ services:
 
 networks:
   macvlan_net:
-    driver: macvlan-CoreDNS
+    driver: macvlan
     driver_opts:
       parent: eth0 # замените на ваш интерфейс
     ipam:
