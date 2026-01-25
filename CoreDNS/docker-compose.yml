@@ -9,3 +9,16 @@ services:
     volumes:
       - ./Corefile:/etc/coredns/Corefile:ro
     command: ["-conf", "/etc/coredns/Corefile"]
+    networks:
+      macvlan_net:
+        ipv4_address: 172.20.100.10 # пример IP
+
+networks:
+  macvlan_net:
+    driver: macvlan
+    driver_opts:
+      parent: eth0 # замените на ваш интерфейс
+    ipam:
+      config:
+        - subnet: 172.20.100.0/24
+          gateway: 172.20.100.1
