@@ -11,9 +11,9 @@ services:
     command: ["-conf", "/etc/coredns/Corefile"]
     networks:
       macvlan_net:
-        ipv4_address: 172.20.100.10 # пример IP
+        ipv4_address: 172.20.100.10 
 
 networks:
   macvlan_net:
     external: true
-    name: macvlan_net
+    name: macvlan-CoreDNS
