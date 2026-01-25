@@ -1,0 +1,31 @@
+lan.:53 {
+    log
+    errors
+    reload 30s
+    hosts {
+        172.20.0.5 server.lan
+        172.20.0.10 storage.lan
+        172.20.0.14 printer.lan
+        172.20.0.20 docker.lan
+        ttl 300
+    }
+    cache 30
+}
+
+.:53 {
+    log
+    errors
+    reload 30s
+    health {
+        lameduck 5s
+    }
+    ready
+    prometheus :9153
+    forward . https://dns.google/dns-query {
+        tls_servername dns.google
+        bootstrap 8.8.8.8 8.8.4.4 2001:4860:4860::8888 2001:4860:4860::8844
+    }
+    cache 30
+}
+
+
