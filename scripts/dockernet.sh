@@ -1,51 +1,42 @@
 #!/bin/bash
 
+# Имя интерфейса macvlan
+MACVLAN_IF="macvlan-CoreDNS"
+MACVLAN_IP="172.20.100.254/24"
+MACVLAN_SUBNET="172.20.100.0/24"
+MACVLAN_GATEWAY="172.20.100.1"
+PARENT_IF="eth0"
 
-
-
-
-
-# Проверка и создание macvlan интерфейса, если не существует
-if ! ip link show macvlan-CoreDNS &>/dev/null; then
-  sudo ip link add macvlan-CoreDNS link eth0 type macvlan mode bridge 2>/dev/null || true
-  echo "Создан интерфейс macvlan-CoreDNS."
-else
-  echo "Интерфейс macvlan-CoreDNS уже существует."
+# Создание интерфейса, если его нет
+if ! ip link show "$MACVLAN_IF" &>/dev/null; then
+    sudo ip link add "$MACVLAN_IF" link "$PARENT_IF" type macvlan mode bridge
+    echo "Создан интерфейс $MACVLAN_IF."
 fi
 
-# Включение интерфейса, если он не up
-if ! ip link show macvlan-CoreDNS | grep -q 'state UP'; then
-  sudo ip link set macvlan-CoreDNS up
-  echo "Интерфейс macvlan-CoreDNS поднят."
+# Поднимаем интерфейс
+sudo ip link set "$MACVLAN_IF" up
+echo "Интерфейс $MACVLAN_IF поднят."
+
+# Назначаем IP, если нет
+if ! ip addr show "$MACVLAN_IF" | grep -wq "${MACVLAN_IP%/*}"; then
+    sudo ip addr add "$MACVLAN_IP" dev "$MACVLAN_IF"
+    echo "Назначен IP $MACVLAN_IP на $MACVLAN_IF."
 else
-  echo "Интерфейс macvlan-CoreDNS уже поднят."
+    echo "IP $MACVLAN_IP уже назначен."
 fi
 
-# Проверка, назначен ли IP на каком-либо интерфейсе
-if ip addr | grep -wq '172.20.100.254'; then
-  # Проверим, назначен ли IP именно на macvlan-CoreDNS
-  if ip addr show macvlan-CoreDNS | grep -wq '172.20.100.254'; then
-    echo "IP 172.20.100.254 уже назначен на macvlan-CoreDNS."
-  else
-    echo "ВНИМАНИЕ: IP 172.20.100.254 уже назначен на другом интерфейсе!"
-  fi
-else
-  sudo ip addr add 172.20.100.254/24 dev macvlan-CoreDNS 2>/dev/null || true
-  echo "Назначен IP 172.20.100.254/24 на macvlan-CoreDNS."
-fi
-
+# Включаем форвардинг и разрешаем Docker-forward
 sudo sysctl -w net.ipv4.ip_forward=1
 sudo iptables -P FORWARD ACCEPT
 
-# Проверка существования docker-сети
+# Создаем Docker macvlan сеть, если нет
 if ! sudo docker network ls --format '{{.Name}}' | grep -q '^macvlan-CoreDNS$'; then
-  sudo docker network create -d macvlan \
-    --subnet=172.20.100.0/24 \
-    --gateway=172.20.100.254 \
-    -o parent=eth0 \
-    macvlan-CoreDNS
-  echo "Создана docker-сеть macvlan-CoreDNS."
+    sudo docker network create -d macvlan \
+        --subnet=$MACVLAN_SUBNET \
+        --gateway=$MACVLAN_IP \
+        -o parent=$PARENT_IF \
+        macvlan-CoreDNS
+    echo "Создана docker-сеть macvlan-CoreDNS."
 else
-  echo "Docker-сеть macvlan-CoreDNS уже существует."
+    echo "Docker-сеть macvlan-CoreDNS уже существует."
 fi
-
