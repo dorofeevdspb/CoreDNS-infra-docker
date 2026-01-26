@@ -91,14 +91,14 @@ case "${1:-}" in
 			/usr/bin/docker network ls || true
 			exit 1
 		fi
-		exec compose -f "$COMPOSE_FILE" up -d --remove-orphans
+		compose -f "$COMPOSE_FILE" up -d --remove-orphans
 		;;
 	stop)
-		exec compose -f "$COMPOSE_FILE" stop
+		compose -f "$COMPOSE_FILE" stop
 		;;
 	restart)
 		compose -f "$COMPOSE_FILE" stop
-		exec compose -f "$COMPOSE_FILE" up -d --remove-orphans
+		compose -f "$COMPOSE_FILE" up -d --remove-orphans
 		;;
 	*)
 		echo "Usage: $0 {up|stop|restart}" >&2
