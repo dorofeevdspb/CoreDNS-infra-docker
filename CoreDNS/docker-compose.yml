@@ -12,9 +12,9 @@ services:
       - ./Corefile:/etc/coredns/Corefile:ro
     command: ["-conf", "/etc/coredns/Corefile"]
     networks:
-      macvlan-CoreDNS:
+      macvlan-coredns:
         ipv4_address: 172.20.100.10
 
 networks:
-  macvlan-CoreDNS:
+  macvlan-coredns:
     external: true

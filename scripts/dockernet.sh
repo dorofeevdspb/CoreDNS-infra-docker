@@ -1,4 +1,43 @@
+
 #!/bin/bash
+
+# === Проверка и регистрация systemd-сервиса ===
+SERVICE_NAME="dockernet"
+SERVICE_FILE="/etc/systemd/system/${SERVICE_NAME}.service"
+SCRIPT_PATH="$(readlink -f "$0")"
+
+# Проверяем, существует ли unit-файл systemd
+if [ ! -f "$SERVICE_FILE" ]; then
+    echo "Systemd unit-файл не найден. Создаю..."
+    sudo bash -c "cat > $SERVICE_FILE" <<EOF
+[Unit]
+Description=Dockernet network setup
+After=network.target docker.service
+
+[Service]
+Type=oneshot
+ExecStart=$SCRIPT_PATH
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target
+EOF
+    sudo systemctl daemon-reload
+    sudo systemctl enable "$SERVICE_NAME"
+    echo "Systemd unit создан и включён."
+    # Продолжаем выполнение скрипта для создания интерфейсов
+fi
+
+# Проверяем, включён ли сервис
+if ! systemctl is-enabled --quiet "$SERVICE_NAME"; then
+    echo "Systemd unit найден, но не включён. Включаю..."
+    sudo systemctl enable "$SERVICE_NAME"
+    sudo systemctl daemon-reload
+    echo "Systemd unit включён."
+    # Продолжаем выполнение скрипта для создания интерфейсов
+fi
+
+# Если сервис уже добавлен и включён, продолжаем выполнение скрипта
 
 # Имя интерфейса macvlan
 MACVLAN_IF="macvlan-CoreDNS"
