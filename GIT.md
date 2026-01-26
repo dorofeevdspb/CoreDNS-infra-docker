@@ -1,12 +1,11 @@
 
 `    ./GIT.md    `
 
+```sh
  git config --local push.followTags true
 
  git config --local commit.gpgsign true
-
-
-
+```
 
 # Git Flow: быстрая шпаргалка
 
@@ -23,44 +22,44 @@ git flow init
 - Начать фичу от `develop`:
 
 ```bash
-git flow feature start {taskname}
+git flow feature start -{taskname}
 ```
 
 - Пушим фичу для совместной работы:
 
 ```bash
-git push -u origin feature/{taskname}
+git push -u origin feature/-{taskname}
 ```
 
 - Завершить фичу (merge в `develop`, удаление ветки локально):
 
 ```bash
-git flow feature finish {taskname}
+git flow feature finish -{taskname}
 ```
 
 - Опционально после финиша удалить ветку на origin (если finish не сделал этого автоматически):
 
 ```bash
-git push origin --delete feature/{taskname}
+git push origin --delete feature/-{taskname}
 ```
 
 ### Релизы
 - Начать релиз от `develop`:
 
 ```bash
-git flow release start 1.2.0
+git flow release start 0.0.0
 ```
 
 - Правим, тестируем, фиксируем. Публикация черновика релиза на origin:
 
 ```bash
-git flow release publish 1.2.0
+git flow release publish 0.0.0
 ```
 
 - Завершить релиз (merge в `master` и `develop`, тегирование):
 
 ```bash
-git flow release finish 1.2.0
+git flow release finish 0.0.0
 git push origin master develop --tags
 ```
 
@@ -68,13 +67,13 @@ git push origin master develop --tags
 - Начать хотфикс от `master`:
 
 ```bash
-git flow hotfix start 1.2.1
+git flow hotfix start 0.0.0
 ```
 
 - После фиксов завершить (merge в `master` и `develop`, тегирование):
 
 ```bash
-git flow hotfix finish 1.2.1
+git flow hotfix finish 0.0.0
 git push origin master develop --tags
 ```
 
