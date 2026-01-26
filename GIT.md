@@ -2,15 +2,17 @@
 `    ./GIT.md    `
 
 ```sh
- git config --local push.followTags true
 
+ git config --local push.followTags true
  git config --local commit.gpgsign true
+
+
 ```
 
 # Git Flow: быстрая шпаргалка
 
 ## Базовая инициализация
-- Настроить Git Flow (ответы по умолчанию: `master`, `develop`, `feature/`, `release/`, `hotfix/`, `support/`, `versiontag/`):
+- Настроить Git Flow (ответы по умолчанию: `master`, `develop`, `feature-`, `release-/`, `hotfix-`, `support-`, `versiontag-`):
 
 ```bash
 git flow init
