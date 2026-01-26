@@ -36,13 +36,14 @@ WantedBy=multi-user.target
 EOF
 
 # helper script to control docker compose reliably
-cat >"$COMPOSE_CTL" <<EOF
-#!/bin/bash
-set -euo pipefail
-
-COMPOSE_DIR="$COMPOSE_DIR"
-COMPOSE_FILE="$COMPOSE_FILE"
-DOCKER_NET="$DOCKER_NET"
+# IMPORTANT: generate without expanding wrapper variables under 'set -u'
+{
+	echo '#!/bin/bash'
+	echo 'set -euo pipefail'
+	printf 'COMPOSE_DIR=%q\n' "$COMPOSE_DIR"
+	printf 'COMPOSE_FILE=%q\n' "$COMPOSE_FILE"
+	printf 'DOCKER_NET=%q\n' "$DOCKER_NET"
+	cat <<'EOF'
 
 MACVLAN_IF="macvlan-coredns"
 MACVLAN_IP="172.20.100.254"
@@ -105,6 +106,7 @@ case "${1:-}" in
 		;;
 esac
 EOF
+} >"$COMPOSE_CTL"
 chmod 0755 "$COMPOSE_CTL"
 
 # systemd unit: ensure CoreDNS container starts after macvlan network exists (rewrite to keep it up to date)
