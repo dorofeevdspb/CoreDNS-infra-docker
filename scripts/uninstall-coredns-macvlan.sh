@@ -141,22 +141,26 @@ if [ "$keep_scripts" -eq 0 ]; then
 	rm -f "$RUNTIME" "$COMPOSE_CTL"
 fi
 
-# 5) Optional: remove macvlan iface and docker network
+# 5) Remove macvlan network interface
+if have_cmd ip; then
+	ip link delete "$MACVLAN_IF" >/dev/null 2>&1 || true
+	echo "Removed network interface: $MACVLAN_IF"
+fi
+
+# 6) Optional: remove docker network
 if [ "$want_purge_net" -eq 1 ]; then
 	if have_cmd docker; then
 		docker network rm "$DOCKER_NET" >/dev/null 2>&1 || true
 	fi
-	if have_cmd ip; then
-		ip link delete "$MACVLAN_IF" >/dev/null 2>&1 || true
-	fi
 fi
 
 echo "Removed: $MACVLAN_SERVICE, $COMPOSE_SERVICE"
+echo "Removed network interface: $MACVLAN_IF"
 if [ "$keep_scripts" -eq 0 ]; then
 	echo "Removed: $RUNTIME, $COMPOSE_CTL"
 else
 	echo "Kept scripts: $RUNTIME, $COMPOSE_CTL"
 fi
 if [ "$want_purge_net" -eq 1 ]; then
-	echo "Purged: docker network '$DOCKER_NET' and iface '$MACVLAN_IF' (best-effort)"
+	echo "Purged: docker network '$DOCKER_NET' (best-effort)"
 fi
