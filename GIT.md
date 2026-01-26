@@ -5,6 +5,7 @@
 
  git config --local push.followTags true
  git config --local commit.gpgsign true
+ git config --local tag.gpgSign true
 
 
 ```
