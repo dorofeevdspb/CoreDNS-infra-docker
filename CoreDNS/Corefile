@@ -10,7 +10,7 @@ lan.:53 {
         172.20.100.10 dns.lan
         172.20.101.10 ca.lan
         172.20.102.10 docker.lan
-        ttl 300
+        ttl 30
     }
     cache 30
 }
