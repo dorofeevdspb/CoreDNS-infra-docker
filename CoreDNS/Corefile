@@ -6,7 +6,7 @@ lan.:53 {
         172.20.0.5 server.lan
         172.20.0.10 storage.lan
         172.20.0.14 printer.lan
-        172.20.0.20 docker.lan
+        172.20.102.10  docker.lan
         ttl 300
     }
     cache 30
