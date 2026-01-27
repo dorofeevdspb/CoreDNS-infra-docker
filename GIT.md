@@ -3,9 +3,14 @@
 
 ```sh
 
+
+ git clone git@github.com:dorofeevdspb/CoreDNS-docker.git /
+	~/git/CoreDNS-docker.git
+ cd ~/git/CoreDNS-docker.git
  git config --local push.followTags true
  git config --local commit.gpgsign true
  git config --local tag.gpgSign true
+
 
 
 ```
