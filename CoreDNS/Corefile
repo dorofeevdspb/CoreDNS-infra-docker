@@ -10,6 +10,11 @@ lan.:53 {
         172.20.100.10 dns.lan
         172.20.101.10 ca.lan
         172.20.102.10 docker.lan
+        172.20.103.10 git.lan
+        172.20.104.10 ci.lan
+        172.20.105.101 01-agent.ci.lan
+        172.20.105.102 02-agent.ci.lan
+        172.20.105.103 03-agent.ci.lan
         ttl 30
     }
     cache 30
