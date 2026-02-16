@@ -15,6 +15,7 @@ lan.:53 {
         172.20.105.101 01-agent.ci.lan
         172.20.105.102 02-agent.ci.lan
         172.20.105.103 03-agent.ci.lan
+        172.20.106.10 test.lan
         ttl 30
     }
     cache 30
