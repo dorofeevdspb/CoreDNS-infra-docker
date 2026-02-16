@@ -9,7 +9,7 @@ services:
       - "53:53/tcp"
       - "53:53/udp"
     volumes:
-      - ./Corefile:/etc/coredns/Corefile:ro
+      - ./coredns:/etc/coredns:ro
     command: ["-conf", "/etc/coredns/Corefile"]
     networks:
       macvlan-coredns:
