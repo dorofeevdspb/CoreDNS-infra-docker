@@ -17,7 +17,16 @@ lan.:53 {
         172.20.105.102 02-agent.ci.lan
         172.20.105.103 03-agent.ci.lan
         172.20.106.10 test.lan
+        172.20.0.5 s3.lan api.s3.lan console.s3.lan
         ttl 30
+    }
+
+    # Wildcard for bucket-style S3 requests:
+    #   <bucket>.s3.lan -> Caddy (then proxied to RustFS)
+    # Keep this AFTER hosts so explicit records win.
+    template IN A {
+        match ^([^.]+)\.s3\.lan\.$
+        answer "{{ .Name }} 30 IN A 172.20.0.5"
     }
     cache 30
 }
