@@ -7,11 +7,6 @@ lan.:53 {
     #   <bucket>.s3.lan -> api.s3.lan -> 172.20.0.5 (Caddy -> RustFS)
     # Using rewrite (instead of template) avoids SERVFAILs if template is unavailable/unstable.
     rewrite stop {
-        # Keep explicit names intact
-        name exact s3.lan s3.lan
-        name exact api.s3.lan api.s3.lan
-        name exact console.s3.lan console.s3.lan
-
         # Any other single-label bucket name
         name regex ^([^.]+)\.s3\.lan\.$ api.s3.lan
     }
