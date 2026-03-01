@@ -2,20 +2,6 @@ lan.:53 {
     log
     errors
     reload 30s
-
-    # Wildcard for bucket-style S3 requests:
-    #   <bucket>.s3.lan -> api.s3.lan -> 172.20.0.5 (Caddy -> RustFS)
-    # Using rewrite (instead of template) avoids SERVFAILs if template is unavailable/unstable.
-    rewrite stop {
-        # Keep explicit names intact
-        name exact s3.lan s3.lan
-        name exact api.s3.lan api.s3.lan
-        name exact console.s3.lan console.s3.lan
-
-        # Any other single-label bucket name
-        name regex ^([^.]+)\.s3\.lan\.$ api.s3.lan
-    }
-
     hosts {
         172.20.0.1 router.lan
         172.20.0.5 server.lan
@@ -33,6 +19,14 @@ lan.:53 {
         172.20.106.10 test.lan
         172.20.0.5 s3.lan api.s3.lan console.s3.lan
         ttl 30
+    }
+
+    # Wildcard for bucket-style S3 requests:
+    #   <bucket>.s3.lan -> Caddy (then proxied to RustFS)
+    # Keep this AFTER hosts so explicit records win.
+    template IN A {
+        match ^([^.]+)\.s3\.lan\.$
+        answer "{{ .Name }} 30 IN A 172.20.0.5"
     }
     cache 30
 }
