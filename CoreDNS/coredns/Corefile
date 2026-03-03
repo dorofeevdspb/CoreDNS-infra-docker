@@ -26,7 +26,7 @@ lan.:53 {
         172.20.105.102 02-agent.ci.lan
         172.20.105.103 03-agent.ci.lan
         172.20.106.10 test.lan
-        172.20.0.5 s3.lan api.s3.lan console.s3.lan
+        172.20.0.5 s3.lan api.s3.lan console.s3.lan erp.lan
         ttl 30
     }
     cache 30
