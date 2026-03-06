@@ -6,7 +6,7 @@ lan.:53 {
         172.20.0.1 router.lan
         172.20.0.5 server.lan
         172.20.0.10 storage.lan
-        172.20.101.10 ns1.dns.lan
+        172.20.100.10 ns1.dns.lan
         172.20.102.10 ns2.dns.lan
         172.20.103.10 ca.lan
         172.20.110.10 proxy.lan

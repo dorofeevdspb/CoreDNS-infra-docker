@@ -2,7 +2,7 @@
 set -e
 
 # === ИМЕНА ===
-PROJECT="coredns"
+PROJECT="coredns-main"
 MACVLAN_IF="macvlan-${PROJECT}"
 DOCKER_NET="macvlan-${PROJECT}"
 
