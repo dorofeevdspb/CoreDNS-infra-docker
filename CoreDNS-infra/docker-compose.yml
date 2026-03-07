@@ -5,9 +5,9 @@ services:
     image: coredns/coredns:latest
     container_name: dns-infra
     restart: unless-stopped
-    ports:
-      - "53:53/tcp"
-      - "53:53/udp"
+#    ports:
+#      - "53:53/tcp"
+#      - "53:53/udp"
     volumes:
       - ./coredns:/etc/coredns:ro
     command: ["-conf", "/etc/coredns/Corefile"]
