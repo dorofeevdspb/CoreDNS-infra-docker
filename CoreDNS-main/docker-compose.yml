@@ -1,9 +1,9 @@
 version: "3.9"
 
 services:
-  coredns:
-    image: coredns/coredns:1.11.1
-    container_name: coredns-main
+  dns-infra:
+    image: coredns/coredns:latest
+    container_name: dns-infra
     restart: unless-stopped
     ports:
       - "53:53/tcp"
@@ -12,9 +12,9 @@ services:
       - ./coredns:/etc/coredns:ro
     command: ["-conf", "/etc/coredns/Corefile"]
     networks:
-      macvlan-coredns:
-        ipv4_address: 172.20.100.10
+      dns-infra:
+        ipv4_address: 172.20.102.10
 
 networks:
-  macvlan-coredns-main:
+  dns-infra:
     external: true

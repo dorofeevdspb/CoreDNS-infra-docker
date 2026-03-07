@@ -2,14 +2,14 @@
 set -e
 
 # === ИМЕНА ===
-PROJECT="coredns-main"
-MACVLAN_IF="macvlan-${PROJECT}"
-DOCKER_NET="macvlan-${PROJECT}"
+PROJECT="dns-infra"
+MACVLAN_IF="${PROJECT}"
+DOCKER_NET="${PROJECT}"
 
 # === СЕТЬ ===
-MACVLAN_IP="172.20.100.254/24"
-MACVLAN_SUBNET="172.20.100.0/24"
-MACVLAN_GATEWAY="172.20.100.1"
+MACVLAN_IP="172.20.102.254/24"
+MACVLAN_SUBNET="172.20.102.0/24"
+MACVLAN_GATEWAY="172.20.102.1"
 PARENT_IF="eth0"
 
 # === macvlan интерфейс хоста ===
